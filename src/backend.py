@@ -1,9 +1,11 @@
+import random
 from typing import Callable
 
 # random.sample(range(10, 30), 5)
-MIN_RANDOM_VALUE_RANGE = -1
-MAX_RANDOM_VALUE_RANGE = -1
-DEFAULT_ARRAY_SIZE = -1
+MIN_RANDOM_VALUE_RANGE = 10
+MAX_RANDOM_VALUE_RANGE = 10000
+DEFAULT_ARRAY_SIZE = 8
+
 
 def pancake_sort(arr: list[int]) -> list[int]:
     """
@@ -17,6 +19,7 @@ def pancake_sort(arr: list[int]) -> list[int]:
     """
     return []
 
+
 def bubble_sort(arr: list[int]) -> list[int]:
     """
     bubble_sort _summary_
@@ -28,6 +31,7 @@ def bubble_sort(arr: list[int]) -> list[int]:
         list[int]: _description_
     """
     return []
+
 
 def quick_sort(arr: list[int]) -> list[int]:
     """
@@ -41,6 +45,7 @@ def quick_sort(arr: list[int]) -> list[int]:
     """
     return []
 
+
 def merge_sort(arr: list[int]) -> list[int]:
     """
     merge_sort _summary_
@@ -52,6 +57,7 @@ def merge_sort(arr: list[int]) -> list[int]:
         list[int]: sorted array
     """
     return []
+
 
 def time_sort(sorting_fn: Callable[[list[int]], list[int]], arr: list[int]) -> int:
     """
@@ -65,8 +71,9 @@ def time_sort(sorting_fn: Callable[[list[int]], list[int]], arr: list[int]) -> i
     Returns:
         int: amount of time it took to sort
     """
-    
+
     return -1
+
 
 def create_sorted_array_with_one_mistake(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     """
@@ -84,6 +91,7 @@ def create_sorted_array_with_one_mistake(size: int = DEFAULT_ARRAY_SIZE) -> list
     """
     return []
 
+
 def create_reversed_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     """
     create_reversed_array creates a list of numbers that is sorted in descending order
@@ -94,13 +102,16 @@ def create_reversed_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     Returns:
         list[int]: sorted array
     """
-    return []
- 
+    return reversed(sorted(random.sample(range(MIN_RANDOM_VALUE_RANGE, MAX_RANDOM_VALUE_RANGE), size)))
+
+
 def create_sorted_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     return []
 
+
 def create_array_of_one_value(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     return []
+
 
 def create_random_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     return []
