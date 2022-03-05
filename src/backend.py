@@ -1,7 +1,6 @@
 import random
 from typing import Callable
 
-# random.sample(range(10, 30), 5)
 MIN_RANDOM_VALUE_RANGE = 10
 MAX_RANDOM_VALUE_RANGE = 10000
 DEFAULT_ARRAY_SIZE = 8
@@ -159,18 +158,18 @@ def create_reversed_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     Returns:
         list[int]: sorted array
     """
-    return list(reversed(sorted(random.sample(range(MIN_RANDOM_VALUE_RANGE, MAX_RANDOM_VALUE_RANGE), size))))
+    return list(reversed(sorted(create_random_array(size))))
 
 
 def create_sorted_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
-    return []
+    return list(sorted(create_random_array(size)))
 
 
-def create_array_of_one_value(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
-    return []
+def create_array_of_one_value(size: int = DEFAULT_ARRAY_SIZE, single_value: int = random.random()) -> list[int]:
+    return [single_value] * size
 
 
 def create_random_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
-    return []
+    return random.sample(range(MIN_RANDOM_VALUE_RANGE, MAX_RANDOM_VALUE_RANGE), size)
 
 # TODO Think of more cases that we should look for when sorting arrays
