@@ -24,4 +24,4 @@ def test_merge_sort():
 
 def test_create_reversed_array():
     arr = create_reversed_array()
-    assert sorted(arr) == reversed(arr)
+    assert sorted(arr) == list(reversed(arr))

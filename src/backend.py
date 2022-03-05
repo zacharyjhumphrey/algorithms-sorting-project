@@ -20,7 +20,7 @@ def pancake_sort(arr: list[int]) -> list[int]:
 
     if len(arr) <= 1:
         return arr
-    
+
     for size in range(len(arr), 1, -1):
         maxindex = max(range(size), key=arr.__getitem__)
         if maxindex+1 != size:
@@ -48,7 +48,7 @@ def bubble_sort(arr: list[int]) -> list[int]:
     changed = True
     while changed:
         changed = False
-        for i in xrange(len(arr) - 1):
+        for i in range(len(arr) - 1):
             if arr[i] > arr[i+1]:
                 arr[i], arr[i+1] = arr[i+1], arr[i]
                 changed = True
@@ -67,10 +67,11 @@ def quick_sort(arr: list[int]) -> list[int]:
         list[int]: sorted array
     """
 
-    return (quick_sort([y for y in arr[1:] if y <  arr[0]]) + 
-            arr[:1] + 
+    return (quick_sort([y for y in arr[1:] if y < arr[0]]) +
+            arr[:1] +
             quick_sort([y for y in arr[1:] if y >= arr[0]])) if len(arr) > 1 else arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Python
+
 
 def merge(left, right):
     result = []
@@ -83,7 +84,7 @@ def merge(left, right):
         else:
             result.append(right[right_idx])
             right_idx += 1
- 
+
     if left_idx < len(left):
         result.extend(left[left_idx:])
     if right_idx < len(right):
@@ -104,11 +105,11 @@ def merge_sort(arr: list[int]) -> list[int]:
 
     if len(arr) <= 1:
         return arr
- 
+
     middle = len(arr) // 2
     left = arr[:middle]
     right = arr[middle:]
- 
+
     left = merge_sort(left)
     right = merge_sort(right)
     return list(merge(left, right))
@@ -158,7 +159,7 @@ def create_reversed_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     Returns:
         list[int]: sorted array
     """
-    return reversed(sorted(random.sample(range(MIN_RANDOM_VALUE_RANGE, MAX_RANDOM_VALUE_RANGE), size)))
+    return list(reversed(sorted(random.sample(range(MIN_RANDOM_VALUE_RANGE, MAX_RANDOM_VALUE_RANGE), size))))
 
 
 def create_sorted_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
