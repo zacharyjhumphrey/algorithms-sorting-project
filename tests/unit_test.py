@@ -1,5 +1,8 @@
+from time import time
 from backend import *
 import random
+import timeit
+import pytest
 
 
 def test_pancake_sort():
@@ -40,3 +43,12 @@ def test_create_array_of_one_value():
     arr = create_array_of_one_value()
     single_value = arr[0]
     assert all(map(lambda x: x == single_value, arr))
+
+
+# # @pytest.mark.repeat(20)
+# def test_time_sort():
+#     arr = create_random_array(3000)
+#     returned_time_passed = time_sorting_fn(merge_sort, arr)
+#     actual_time_passed = timeit.timeit(
+#         lambda: time_sorting_fn(merge_sort, arr), number=1000)
+#     assert actual_time_passed - returned_time_passed == pytest.approx(0, 1e-3)
