@@ -11,7 +11,7 @@ algorithms and m being the different test cases
 """
 
 
-def create_graph(arr, title):
+def create_graph(arr_creation_fn, title):
     X_AXIS_LABEL = 'SORTING FUNCTIONS'
     ARRAY_SIZES = [10, 100, 200]
 
@@ -25,8 +25,9 @@ def create_graph(arr, title):
 
     # TODO 1000 returns call stack error
     for i, size in enumerate(ARRAY_SIZES):
+        arr_to_sort = arr_creation_fn(size)
         for fn, data in sorting_data.items():
-            data[size] = time_sorting_fn(fn, arr, 1)
+            data[size] = time_sorting_fn(fn, arr_to_sort, 1)
         # plotting the points
         axis[i].bar(x, [data[size] for key, data in sorting_data.items()])
         axis[i].set_ylabel(f'{size} ELEMENTS')

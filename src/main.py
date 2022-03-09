@@ -3,4 +3,4 @@ from graph import create_graph
 
 
 print('CREATING GRAPH')
-create_graph(create_random_array(10), 'RANDOM ARRAY')
+create_graph(create_random_array, 'RANDOM ARRAY')
