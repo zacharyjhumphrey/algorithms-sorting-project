@@ -13,8 +13,9 @@ algorithms and m being the different test cases
 
 def create_graph(arr, title):
     X_AXIS_LABEL = 'SORTING FUNCTIONS'
+    ARRAY_SIZES = [10, 100, 200]
 
-    figure, axis = plt.subplots(3, 1)
+    figure, axis = plt.subplots(len(ARRAY_SIZES), 1)
 
     # x axis values
     x = ['bubble sort', 'pancake sort', 'quick sort', 'merge sort']
@@ -23,7 +24,7 @@ def create_graph(arr, title):
     }
 
     # TODO 1000 returns call stack error
-    for i, size in enumerate([10, 100, 200]):
+    for i, size in enumerate(ARRAY_SIZES):
         for fn, data in sorting_data.items():
             data[size] = time_sorting_fn(fn, arr, 1)
         # plotting the points
