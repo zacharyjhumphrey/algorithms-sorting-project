@@ -45,6 +45,25 @@ def test_create_array_of_one_value():
     assert all(map(lambda x: x == single_value, arr))
 
 
+def test_create_sorted_array_with_one_mistake():
+    arr = create_sorted_array_with_one_mistake()
+    prev = arr[0]
+    mistake_count = 0
+    for x in arr:
+        if x < prev:
+            mistake_count += 1
+        else:
+            prev = x
+    assert mistake_count == 1
+
+
+def test_quick_sort_does_not_throw_stack_overflow():
+    try:
+        merge_sort(create_random_array(1000000000))
+        assert True
+    except:
+        assert False
+
 # # @pytest.mark.repeat(20)
 # def test_time_sort():
 #     arr = create_random_array(3000)

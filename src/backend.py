@@ -4,7 +4,7 @@ import timeit
 from typing import Callable, Tuple
 
 MIN_RANDOM_VALUE_RANGE = 1
-MAX_RANDOM_VALUE_RANGE = 10000000000000
+MAX_RANDOM_VALUE_RANGE = 1000000000
 DEFAULT_ARRAY_SIZE = 8
 
 
@@ -74,7 +74,7 @@ def quick_sort(arr: list[int]) -> list[int]:
 # https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Python
 
 
-def merge(left, right):
+def __merge(left, right):
     result = []
     left_idx, right_idx = 0, 0
     while left_idx < len(left) and right_idx < len(right):
@@ -113,7 +113,7 @@ def merge_sort(arr: list[int]) -> list[int]:
 
     left = merge_sort(left)
     right = merge_sort(right)
-    return list(merge(left, right))
+    return list(__merge(left, right))
 # https://rosettacode.org/wiki/Sorting_algorithms/Merge_sort#Python
 
 
@@ -148,10 +148,10 @@ def create_sorted_array_with_one_mistake(size: int = DEFAULT_ARRAY_SIZE) -> list
         list[int]: _description_
     """
     sorted_array = sorted(create_random_array())
-    (pos_to_grab, pos_to_swap_to) = random.sample(
+    (pos_to_grab, pos_to_insert_into) = random.sample(
         range(0, len(sorted_array)), 2)
     grabbed_elem = sorted_array.pop(pos_to_grab)
-    sorted_array.insert(pos_to_swap_to, grabbed_elem)
+    sorted_array.insert(pos_to_insert_into, grabbed_elem)
     return sorted_array
 
 
