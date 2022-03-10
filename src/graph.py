@@ -1,3 +1,4 @@
+from backend import bubble_sort, create_random_array, merge_sort, pancake_sort, quick_sort, time_sorting_fn
 import matplotlib.pyplot as plt
 
 # TODO Need to pass in x and y values
@@ -8,31 +9,31 @@ fairs against each of the test cases and another where we see how one sorting al
 each of the different test cases. this would lead to n*m graphs with n being the number of sorting
 algorithms and m being the different test cases
 """
-def create_graph():
-    GRAPH_TITLE = 'GRAPH TITLE'
-    X_AXIS_LABEL = 'X AXIS LABEL'
-    Y_AXIS_LABEL = 'Y AXIS LABEL'
-    
+
+
+def create_graph(arr_creation_fn, title):
+    X_AXIS_LABEL = 'SORTING FUNCTIONS'
+    ARRAY_SIZES = [10, 100, 200]
+
+    figure, axis = plt.subplots(len(ARRAY_SIZES), 1)
+
     # x axis values
-    x = [1, 2, 3, 4, 5, 6]
-    # corresponding y axis values
-    y = [2, 4, 1, 5, 2, 6]
+    x = ['bubble sort', 'pancake sort', 'quick sort', 'merge sort']
+    sorting_data = {
+        bubble_sort: {}, pancake_sort: {}, quick_sort: {}, merge_sort: {}
+    }
 
-    # plotting the points
-    plt.plot(x, y, color='green', linestyle='dashed', linewidth=3,
-            marker='o', markerfacecolor='blue', markersize=12)
+    # TODO 1000 returns call stack error
+    for i, size in enumerate(ARRAY_SIZES):
+        arr_to_sort = arr_creation_fn(size)
+        for fn, data in sorting_data.items():
+            data[size] = time_sorting_fn(fn, arr_to_sort, 1)
+        # plotting the points
+        axis[i].bar(x, [data[size] for key, data in sorting_data.items()])
+        axis[i].set_ylabel(f'{size} ELEMENTS')
 
-    # setting x and y axis range
-    plt.ylim(1, 8)
-    plt.xlim(1, 8)
-
-    # naming the x axis
     plt.xlabel(X_AXIS_LABEL)
-    # naming the y axis
-    plt.ylabel(Y_AXIS_LABEL)
-
-    # giving a title to my graph
-    plt.title(GRAPH_TITLE)
+    axis[0].set_title(title)
 
     # function to show the plot
     plt.show()

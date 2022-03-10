@@ -1,3 +1,9 @@
 {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "PYDEVD_WARN_EVALUATION_TIMEOUT": "50000",
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
