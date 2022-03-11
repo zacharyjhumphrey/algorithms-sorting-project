@@ -1,6 +1,4 @@
 # algorithms-sorting-project
-<<<<<<< HEAD
-=======
 
 ## google meet link!
 
@@ -42,4 +40,3 @@ pytest
 ### run main for test
 
 python src/main.py
->>>>>>> 50f600a03dffcdb143f55f54a137337d1ddaeeab

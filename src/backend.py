@@ -34,7 +34,6 @@ def pancake_sort(arr: list[int]) -> list[int]:
     return arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Pancake_sort#Python
 
-
 def bubble_sort(arr: list[int]) -> list[int]:
     """
     bubble_sort _summary_
@@ -49,13 +48,13 @@ def bubble_sort(arr: list[int]) -> list[int]:
     changed = True
     while changed:
         changed = False
+
         for i in range(len(arr) - 1):
             if arr[i] > arr[i+1]:
                 arr[i], arr[i+1] = arr[i+1], arr[i]
                 changed = True
     return arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Bubble_sort#Python
-
 
 def quick_sort(arr: list[int]) -> list[int]:
     """
@@ -68,13 +67,12 @@ def quick_sort(arr: list[int]) -> list[int]:
         list[int]: sorted array
     """
 
-    return (quick_sort([y for y in arr[1:] if y < arr[0]]) +
-            arr[:1] +
+    return (quick_sort([y for y in arr[1:] if y <  arr[0]]) + 
+            arr[:1] + 
             quick_sort([y for y in arr[1:] if y >= arr[0]])) if len(arr) > 1 else arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Python
 
-
-def __merge(left, right):
+def merge(left, right):
     result = []
     left_idx, right_idx = 0, 0
     while left_idx < len(left) and right_idx < len(right):
@@ -92,7 +90,6 @@ def __merge(left, right):
         result.extend(right[right_idx:])
     return result
 
-
 def merge_sort(arr: list[int]) -> list[int]:
     """
     merge_sort _summary_
@@ -103,6 +100,17 @@ def merge_sort(arr: list[int]) -> list[int]:
     Returns:
         list[int]: sorted array
     """
+    if len(arr) <= 1:
+        return arr
+ 
+    middle = len(arr) // 2
+    left = arr[:middle]
+    right = arr[middle:]
+ 
+    left = merge_sort(left)
+    right = merge_sort(right)
+    return list(merge(left, right))
+# https://rosettacode.org/wiki/Sorting_algorithms/Merge_sort#Python
 
     if len(arr) <= 1:
         return arr
