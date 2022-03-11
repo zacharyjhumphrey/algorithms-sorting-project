@@ -72,23 +72,35 @@ def quick_sort(arr: list[int]) -> list[int]:
             quick_sort([y for y in arr[1:] if y >= arr[0]])) if len(arr) > 1 else arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Python
 
-def merge(left, right):
-    result = []
-    left_idx, right_idx = 0, 0
-    while left_idx < len(left) and right_idx < len(right):
-        # change the direction of this comparison to change the direction of the sort
-        if left[left_idx] <= right[right_idx]:
-            result.append(left[left_idx])
-            left_idx += 1
+def merge(a, l, m, r):
+    n1 = m - l + 1
+    n2 = r - m
+    L = [0] * n1
+    R = [0] * n2
+    for i in range(0, n1):
+        L[i] = a[l + i]
+    for i in range(0, n2):
+        R[i] = a[m + i + 1]
+ 
+    i, j, k = 0, 0, l
+    while i < n1 and j < n2:
+        if L[i] <= R[j]:
+            a[k] = L[i]
+            i += 1
         else:
-            result.append(right[right_idx])
-            right_idx += 1
-
-    if left_idx < len(left):
-        result.extend(left[left_idx:])
-    if right_idx < len(right):
-        result.extend(right[right_idx:])
-    return result
+            a[k] = R[j]
+            j += 1
+        k += 1
+ 
+    while i < n1:
+        a[k] = L[i]
+        i += 1
+        k += 1
+ 
+    while j < n2:
+        a[k] = R[j]
+        j += 1
+        k += 1
 
 def merge_sort(arr: list[int]) -> list[int]:
     """
@@ -100,30 +112,27 @@ def merge_sort(arr: list[int]) -> list[int]:
     Returns:
         list[int]: sorted array
     """
-    if len(arr) <= 1:
-        return arr
- 
-    middle = len(arr) // 2
-    left = arr[:middle]
-    right = arr[middle:]
- 
-    left = merge_sort(left)
-    right = merge_sort(right)
-    return list(merge(left, right))
-# https://rosettacode.org/wiki/Sorting_algorithms/Merge_sort#Python
-
-    if len(arr) <= 1:
-        return arr
-
-    middle = len(arr) // 2
-    left = arr[:middle]
-    right = arr[middle:]
-
-    left = merge_sort(left)
-    right = merge_sort(right)
-    return list(__merge(left, right))
-# https://rosettacode.org/wiki/Sorting_algorithms/Merge_sort#Python
-
+     # start with least partition size of 2^0 = 1
+    width = 1   
+    n = len(arr)                                         
+    # subarray size grows by powers of 2
+    # since growth of loop condition is exponential,
+    # time consumed is logarithmic (log2n)
+    while (width < n):
+        # always start from leftmost
+        l=0
+        while (l < n):
+            r = min(l+(width*2-1), n-1)        
+            m = min(l+width-1,n-1)
+            # final merge should consider
+            # unmerged sublist if input arr
+            # size is not power of 2             
+            merge(arr, l, m, r)
+            l += width*2
+        # Increasing sub array size by powers of 2
+        width *= 2
+    return arr
+# https://www.geeksforgeeks.org/iterative-merge-sort/
 
 def time_sorting_fn(sorting_fn: Callable[[list[int]], list[int]], arr: list[int], repeat: int = 1000) -> int:
     """
