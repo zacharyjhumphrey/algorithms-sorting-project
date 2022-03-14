@@ -59,7 +59,7 @@ def test_create_sorted_array_with_one_mistake():
 
 def test_quick_sort_does_not_throw_stack_overflow():
     try:
-        merge_sort(create_random_array(100000000))
+        quick_sort(create_random_array(10000))
     except MemoryError as e:
         pytest.fail(f'Memory Error has occurred')
 
