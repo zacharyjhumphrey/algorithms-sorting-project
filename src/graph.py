@@ -13,7 +13,7 @@ algorithms and m being the different test cases
 
 def create_graph(arr_creation_fn, title):
     X_AXIS_LABEL = 'SORTING FUNCTIONS'
-    ARRAY_SIZES = [10, 100, 300]
+    ARRAY_SIZES = [10, 1000, 10000]
 
     figure, axis = plt.subplots(len(ARRAY_SIZES), 1)
 
