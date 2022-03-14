@@ -34,6 +34,7 @@ def pancake_sort(arr: list[int]) -> list[int]:
     return arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Pancake_sort#Python
 
+
 def bubble_sort(arr: list[int]) -> list[int]:
     """
     bubble_sort _summary_
@@ -56,6 +57,7 @@ def bubble_sort(arr: list[int]) -> list[int]:
     return arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Bubble_sort#Python
 
+
 def quick_sort(arr: list[int]) -> list[int]:
     """
     quick_sort _summary_
@@ -67,12 +69,13 @@ def quick_sort(arr: list[int]) -> list[int]:
         list[int]: sorted array
     """
 
-    return (quick_sort([y for y in arr[1:] if y <  arr[0]]) + 
-            arr[:1] + 
+    return (quick_sort([y for y in arr[1:] if y < arr[0]]) +
+            arr[:1] +
             quick_sort([y for y in arr[1:] if y >= arr[0]])) if len(arr) > 1 else arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Python
 
-def merge(a, l, m, r):
+
+def __merge(a, l, m, r):
     n1 = m - l + 1
     n2 = r - m
     L = [0] * n1
@@ -81,7 +84,7 @@ def merge(a, l, m, r):
         L[i] = a[l + i]
     for i in range(0, n2):
         R[i] = a[m + i + 1]
- 
+
     i, j, k = 0, 0, l
     while i < n1 and j < n2:
         if L[i] <= R[j]:
@@ -91,16 +94,17 @@ def merge(a, l, m, r):
             a[k] = R[j]
             j += 1
         k += 1
- 
+
     while i < n1:
         a[k] = L[i]
         i += 1
         k += 1
- 
+
     while j < n2:
         a[k] = R[j]
         j += 1
         k += 1
+
 
 def merge_sort(arr: list[int]) -> list[int]:
     """
@@ -112,27 +116,28 @@ def merge_sort(arr: list[int]) -> list[int]:
     Returns:
         list[int]: sorted array
     """
-     # start with least partition size of 2^0 = 1
-    width = 1   
-    n = len(arr)                                         
+    # start with least partition size of 2^0 = 1
+    width = 1
+    n = len(arr)
     # subarray size grows by powers of 2
     # since growth of loop condition is exponential,
     # time consumed is logarithmic (log2n)
     while (width < n):
         # always start from leftmost
-        l=0
+        l = 0
         while (l < n):
-            r = min(l+(width*2-1), n-1)        
-            m = min(l+width-1,n-1)
+            r = min(l+(width*2-1), n-1)
+            m = min(l+width-1, n-1)
             # final merge should consider
             # unmerged sublist if input arr
-            # size is not power of 2             
-            merge(arr, l, m, r)
+            # size is not power of 2
+            __merge(arr, l, m, r)
             l += width*2
         # Increasing sub array size by powers of 2
         width *= 2
     return arr
 # https://www.geeksforgeeks.org/iterative-merge-sort/
+
 
 def time_sorting_fn(sorting_fn: Callable[[list[int]], list[int]], arr: list[int], repeat: int = 1000) -> int:
     """

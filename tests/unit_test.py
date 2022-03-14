@@ -45,23 +45,33 @@ def test_create_array_of_one_value():
     assert all(map(lambda x: x == single_value, arr))
 
 
-def test_create_sorted_array_with_one_mistake():
-    arr = create_sorted_array_with_one_mistake()
-    prev = arr[0]
-    mistake_count = 0
-    for x in arr:
-        if x < prev:
-            mistake_count += 1
-        else:
-            prev = x
-    assert mistake_count == 1
+def test_sort_does_not_throw_stack_overflow():
+    try:
+        merge_sort(create_random_array(10000))
+    except MemoryError as e:
+        pytest.fail(f'Memory Error has occurred')
 
 
 def test_quick_sort_does_not_throw_stack_overflow():
     try:
-        merge_sort(create_random_array(100000000))
+        quick_sort(create_random_array(10000))
     except MemoryError as e:
         pytest.fail(f'Memory Error has occurred')
+
+
+def test_bubble_sort_is_slowest_in_random_and_large_array():
+    random_arr = create_random_array(500)
+    bubble_sort_time = time_sorting_fn(bubble_sort, random_arr, 1)
+    assert time_sorting_fn(quick_sort, random_arr, 1) < bubble_sort_time
+    assert time_sorting_fn(pancake_sort, random_arr, 1) < bubble_sort_time
+
+
+def test_bubble_sort_is_fastest_in_sorted_array():
+    sorted_arr = create_sorted_array(500)
+    bubble_sort_time = time_sorting_fn(bubble_sort, sorted_arr, 1)
+    assert time_sorting_fn(merge_sort, sorted_arr, 1) > bubble_sort_time
+    assert time_sorting_fn(quick_sort, sorted_arr, 1) > bubble_sort_time
+    assert time_sorting_fn(pancake_sort, sorted_arr, 1) > bubble_sort_time
 
 # # @pytest.mark.repeat(20)
 # def test_time_sort():
