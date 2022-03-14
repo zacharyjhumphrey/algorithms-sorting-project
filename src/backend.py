@@ -58,6 +58,20 @@ def bubble_sort(arr: list[int]) -> list[int]:
 # https://rosettacode.org/wiki/Sorting_algorithms/Bubble_sort#Python
 
 
+def partition(array, low, high):
+    i = (low - 1)
+    x = array[high]
+
+    for j in range(low, high):
+        if array[j] <= x:
+
+            i = i+1
+            array[i], array[j] = array[j], array[i]
+
+    array[i+1], array[high] = array[high], array[i+1]
+    return (i+1)
+
+
 def quick_sort(arr: list[int]) -> list[int]:
     """
     quick_sort _summary_
@@ -69,10 +83,48 @@ def quick_sort(arr: list[int]) -> list[int]:
         list[int]: sorted array
     """
 
-    return (quick_sort([y for y in arr[1:] if y < arr[0]]) +
-            arr[:1] +
-            quick_sort([y for y in arr[1:] if y >= arr[0]])) if len(arr) > 1 else arr
-# https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Python
+    high = len(arr) - 1
+    low = 0
+
+    #  auxiliary stack
+    size = high - low + 1
+    stack = [0] * (size)
+
+    top = -1
+
+    top = top + 1
+    stack[top] = low
+    top = top + 1
+    stack[top] = high
+
+    # Keep popping from stack while is not empty
+    while top >= 0:
+
+        # Pop high and low
+        high = stack[top]
+        top = top - 1
+        low = stack[top]
+        top = top - 1
+
+        # sorted array
+        p = partition(arr, low, high)
+
+        # push left side to stack
+        if p-1 > low:
+            top = top + 1
+            stack[top] = low
+            top = top + 1
+            stack[top] = p - 1
+
+        #  push right side to stack
+        if p+1 < high:
+            top = top + 1
+            stack[top] = p + 1
+            top = top + 1
+            stack[top] = high
+
+    return arr
+# https://www.studytonight.com/python-programs/python-program-for-iterative-quicksort
 
 
 def __merge(a, l, m, r):
