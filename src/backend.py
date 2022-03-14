@@ -1,9 +1,12 @@
-from typing import Callable
+import random
+from time import time
+import timeit
+from typing import Callable, Tuple
 
-# random.sample(range(10, 30), 5)
-MIN_RANDOM_VALUE_RANGE = -1
-MAX_RANDOM_VALUE_RANGE = -1
-DEFAULT_ARRAY_SIZE = -1
+MIN_RANDOM_VALUE_RANGE = 1
+MAX_RANDOM_VALUE_RANGE = 10000000000
+DEFAULT_ARRAY_SIZE = 8
+
 
 def pancake_sort(arr: list[int]) -> list[int]:
     """
@@ -18,7 +21,7 @@ def pancake_sort(arr: list[int]) -> list[int]:
 
     if len(arr) <= 1:
         return arr
-    
+
     for size in range(len(arr), 1, -1):
         maxindex = max(range(size), key=arr.__getitem__)
         if maxindex+1 != size:
@@ -30,6 +33,7 @@ def pancake_sort(arr: list[int]) -> list[int]:
             arr[:size] = reversed(arr[:size])
     return arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Pancake_sort#Python
+
 
 def bubble_sort(arr: list[int]) -> list[int]:
     """
@@ -45,12 +49,28 @@ def bubble_sort(arr: list[int]) -> list[int]:
     changed = True
     while changed:
         changed = False
-        for i in xrange(len(arr) - 1):
+
+        for i in range(len(arr) - 1):
             if arr[i] > arr[i+1]:
                 arr[i], arr[i+1] = arr[i+1], arr[i]
                 changed = True
     return arr
 # https://rosettacode.org/wiki/Sorting_algorithms/Bubble_sort#Python
+
+
+def partition(array, low, high):
+    i = (low - 1)
+    x = array[high]
+
+    for j in range(low, high):
+        if array[j] <= x:
+
+            i = i+1
+            array[i], array[j] = array[j], array[i]
+
+    array[i+1], array[high] = array[high], array[i+1]
+    return (i+1)
+
 
 def quick_sort(arr: list[int]) -> list[int]:
     """
@@ -63,28 +83,80 @@ def quick_sort(arr: list[int]) -> list[int]:
         list[int]: sorted array
     """
 
-    return (quick_sort([y for y in arr[1:] if y <  arr[0]]) + 
-            arr[:1] + 
-            quick_sort([y for y in arr[1:] if y >= arr[0]])) if len(arr) > 1 else arr
-# https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Python
+    high = len(arr) - 1
+    low = 0
 
-def merge(left, right):
-    result = []
-    left_idx, right_idx = 0, 0
-    while left_idx < len(left) and right_idx < len(right):
-        # change the direction of this comparison to change the direction of the sort
-        if left[left_idx] <= right[right_idx]:
-            result.append(left[left_idx])
-            left_idx += 1
+    #  auxiliary stack
+    size = high - low + 1
+    stack = [0] * (size)
+
+    top = -1
+
+    top = top + 1
+    stack[top] = low
+    top = top + 1
+    stack[top] = high
+
+    # Keep popping from stack while is not empty
+    while top >= 0:
+
+        # Pop high and low
+        high = stack[top]
+        top = top - 1
+        low = stack[top]
+        top = top - 1
+
+        # sorted array
+        p = partition(arr, low, high)
+
+        # push left side to stack
+        if p-1 > low:
+            top = top + 1
+            stack[top] = low
+            top = top + 1
+            stack[top] = p - 1
+
+        #  push right side to stack
+        if p+1 < high:
+            top = top + 1
+            stack[top] = p + 1
+            top = top + 1
+            stack[top] = high
+
+    return arr
+# https://www.studytonight.com/python-programs/python-program-for-iterative-quicksort
+
+
+def __merge(a, l, m, r):
+    n1 = m - l + 1
+    n2 = r - m
+    L = [0] * n1
+    R = [0] * n2
+    for i in range(0, n1):
+        L[i] = a[l + i]
+    for i in range(0, n2):
+        R[i] = a[m + i + 1]
+
+    i, j, k = 0, 0, l
+    while i < n1 and j < n2:
+        if L[i] <= R[j]:
+            a[k] = L[i]
+            i += 1
         else:
-            result.append(right[right_idx])
-            right_idx += 1
- 
-    if left_idx < len(left):
-        result.extend(left[left_idx:])
-    if right_idx < len(right):
-        result.extend(right[right_idx:])
-    return result
+            a[k] = R[j]
+            j += 1
+        k += 1
+
+    while i < n1:
+        a[k] = L[i]
+        i += 1
+        k += 1
+
+    while j < n2:
+        a[k] = R[j]
+        j += 1
+        k += 1
+
 
 def merge_sort(arr: list[int]) -> list[int]:
     """
@@ -96,20 +168,30 @@ def merge_sort(arr: list[int]) -> list[int]:
     Returns:
         list[int]: sorted array
     """
+    # start with least partition size of 2^0 = 1
+    width = 1
+    n = len(arr)
+    # subarray size grows by powers of 2
+    # since growth of loop condition is exponential,
+    # time consumed is logarithmic (log2n)
+    while (width < n):
+        # always start from leftmost
+        l = 0
+        while (l < n):
+            r = min(l+(width*2-1), n-1)
+            m = min(l+width-1, n-1)
+            # final merge should consider
+            # unmerged sublist if input arr
+            # size is not power of 2
+            __merge(arr, l, m, r)
+            l += width*2
+        # Increasing sub array size by powers of 2
+        width *= 2
+    return arr
+# https://www.geeksforgeeks.org/iterative-merge-sort/
 
-    if len(arr) <= 1:
-        return arr
- 
-    middle = len(arr) // 2
-    left = arr[:middle]
-    right = arr[middle:]
- 
-    left = merge_sort(left)
-    right = merge_sort(right)
-    return list(merge(left, right))
-# https://rosettacode.org/wiki/Sorting_algorithms/Merge_sort#Python
 
-def time_sort(sorting_fn: Callable[[list[int]], list[int]], arr: list[int]) -> int:
+def time_sorting_fn(sorting_fn: Callable[[list[int]], list[int]], arr: list[int], repeat: int = 1000) -> int:
     """
     time_sort takes a function and an array and returns how long it took
     for that array to be sorted
@@ -121,8 +203,8 @@ def time_sort(sorting_fn: Callable[[list[int]], list[int]], arr: list[int]) -> i
     Returns:
         int: amount of time it took to sort
     """
-    
-    return -1
+    return timeit.timeit(lambda: sorting_fn(arr), number=repeat)
+
 
 def create_sorted_array_with_one_mistake(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     """
@@ -131,6 +213,7 @@ def create_sorted_array_with_one_mistake(size: int = DEFAULT_ARRAY_SIZE) -> list
     in this case, 7 is out of place, but moving it to the end of the array will 
     easily sort the array
     TODO Make methods similar to this but they have smaller elements or something
+    TODO Code review
 
     Args:
         size (int, optional): size of the array . Defaults to DEFAULT_ARRAY_SIZE.
@@ -138,7 +221,13 @@ def create_sorted_array_with_one_mistake(size: int = DEFAULT_ARRAY_SIZE) -> list
     Returns:
         list[int]: _description_
     """
-    return []
+    sorted_array = sorted(create_random_array())
+    (pos_to_grab, pos_to_insert_into) = random.sample(
+        range(0, len(sorted_array)), 2)
+    grabbed_elem = sorted_array.pop(pos_to_grab)
+    sorted_array.insert(pos_to_insert_into, grabbed_elem)
+    return sorted_array
+
 
 def create_reversed_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     """
@@ -150,15 +239,18 @@ def create_reversed_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
     Returns:
         list[int]: sorted array
     """
-    return []
- 
-def create_sorted_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
-    return []
+    return list(reversed(sorted(create_random_array(size))))
 
-def create_array_of_one_value(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
-    return []
+
+def create_sorted_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
+    return list(sorted(create_random_array(size)))
+
+
+def create_array_of_one_value(size: int = DEFAULT_ARRAY_SIZE, single_value: int = random.random()) -> list[int]:
+    return [single_value] * size
+
 
 def create_random_array(size: int = DEFAULT_ARRAY_SIZE) -> list[int]:
-    return []
+    return random.sample(range(MIN_RANDOM_VALUE_RANGE, MAX_RANDOM_VALUE_RANGE), size)
 
 # TODO Think of more cases that we should look for when sorting arrays
